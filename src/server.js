@@ -6,5 +6,7 @@ app.get('/update', function(request, response){
   response.sendFile('/serv/src/index.html');
   response.send(request.query.dia + " " + request.query.chuva);
   //response.send(request.query.chuva);
+  console.log("Dia: " + request.query.dia);
+  console.log("Chuva: " + request.query.chuva);
 });
 app.listen(8180);

@@ -3,10 +3,56 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <h1>ALECS BAITOLA</h1>
-    <h2 id = "dia"></h2>
-    <h2 id = "chuva"></h2>
+    <h2 id = "database"></h2>
   </head>
   <body>
+
+  <div>
+    <table style="width:50%" id = "tabela">
+     <tr>
+       <th>Sensor</th>
+       <th>Data</th>
+       <th>Chuva(mm)</th>
+     </tr>
+    </table>
+  </div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-database.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyBfWkGbyFbsvfh6bO_HvgZlndfE5lmW1ow",
+        authDomain: "color-classifier-7f089.firebaseapp.com",
+        databaseURL: "https://color-classifier-7f089.firebaseio.com",
+        projectId: "color-classifier-7f089",
+        storageBucket: "color-classifier-7f089.appspot.com",
+        messagingSenderId: "455231269453",
+        appId: "1:455231269453:web:b1f4e8c1dae9f6efe74a04"
+      };
+      // Initialize Firebase
+      let app = firebase.initializeApp(firebaseConfig);
+      let _dados = [];
+      var db = app.database();
+      let dados_chuva = db.ref("dados-chuva");
+
+      dados_chuva.once('value', function(snapshot){
+        snapshot.forEach(function(data){
+          _dados.push(data.val());
+        });
+      }, function(error){
+        console.log("Error: " + error.code);
+      });
+
+      for(let i = 0; i < _dados.length; i++){
+        let data = _dados[i].Data;
+        let nivel = _dados[i].Nivel;
+        let id = _dados[i].Id;
+        console.log("Data: " + data + " Nivel: " + nivel + " Id: " + id);
+      }
+
+    </script>
+
   </body>
 </html>

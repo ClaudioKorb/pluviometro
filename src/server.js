@@ -5,7 +5,7 @@ var id_Sensor;
 var data_Sensor;
 var nivel_Sensor;
 
-var validIds = ['ARA00, ARA01, ARA02, ARA03, TESTE01'];
+var validIds = ['ARA00', 'ARA01', 'ARA02', 'ARA03', 'TESTE01'];
 
 
 var serviceAccount = require("../auth/admin.json");

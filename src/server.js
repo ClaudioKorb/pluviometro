@@ -5,6 +5,8 @@ var id_Sensor;
 var data_Sensor;
 var nivel_Sensor;
 
+var validIds = ['ARA00, ARA01, ARA02, ARA03, TESTE01'];
+
 
 var serviceAccount = require("../auth/admin.json");
 
@@ -20,26 +22,29 @@ app.get('/view', function(request, response){
 
 
 app.get('/update', function(request, response){
-  response.sendFile('/home/pluviometro/pluviometro/src/index.html');
   id_Sensor = request.query.id;
   nivel_Sensor = request.query.chuva;
   data_Sensor = request.query.dia;
-  var ref = db.ref("dados-chuva");
-  var agora = new Date();
-
-  ref.push(
-    {
-        Data: agora.getTime(),
-        Id: id_Sensor,
-        Nivel: nivel_Sensor
-    },
-        function(error){
-        if(error){
-          console.log("Data could not be saved: " +error);
-        }else{
-          console.log("Data saved successfully.");
-        }
-  });
+  if(validIds.find(id_Sensor)){
+    response.sendFile('/home/pluviometro/pluviometro/src/index.html');
+    var ref = db.ref("dados-chuva");
+    var agora = new Date();
+    ref.push(
+      {
+          Data: agora.getTime(),
+          Id: id_Sensor,
+          Nivel: nivel_Sensor
+      },
+          function(error){
+          if(error){
+            console.log("Data could not be saved: " +error);
+          }else{
+            console.log("Data saved successfully.");
+          }
+    });
+  }else{
+    response.send("SAI DO MEU SERVIDOR SEU OTARIO");
+  }
 
 
 });

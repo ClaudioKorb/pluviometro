@@ -25,7 +25,7 @@ app.get('/update', function(request, response){
   id_Sensor = request.query.id;
   nivel_Sensor = request.query.chuva;
   data_Sensor = request.query.dia;
-  if(validIds.find(id_Sensor)){
+  if(validIds.findIndex(id_Sensor) != -1){
     response.sendFile('/home/pluviometro/pluviometro/src/index.html');
     var ref = db.ref("dados-chuva");
     var agora = new Date();

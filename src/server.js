@@ -15,12 +15,12 @@ var fire_app = admin.initializeApp({
 var db = admin.database();
 
 app.get('/view', function(request, response){
-  response.sendFile('home/pluviometro/pluviometro/src/table.html');
+  response.sendFile('/home/pluviometro/pluviometro/src/table.html');
 });
 
 
 app.get('/update', function(request, response){
-  response.sendFile('home/pluviometro/pluviometro/src/index.html');
+  response.sendFile('/home/pluviometro/pluviometro/src/index.html');
   id_Sensor = request.query.id;
   nivel_Sensor = request.query.chuva;
   data_Sensor = request.query.dia;

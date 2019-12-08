@@ -20,6 +20,10 @@ app.get('/view', function(request, response){
   response.sendFile('/home/pluviometro/pluviometro/src/table.html');
 });
 
+app.get('/date', function(request, response){
+  var novaHora = new Date();
+  response.send(novaHora.getHours());
+});
 
 app.get('/update', function(request, response){
   id_Sensor = request.query.id;

@@ -22,7 +22,7 @@ app.get('/view', function(request, response){
 
 app.get('/date', function(request, response){
   var novaHora = new Date();
-  response.send(novaHora.getHours());
+  response.send(JSON.stringfy(novaHora.getHours()));
 });
 
 app.get('/update', function(request, response){

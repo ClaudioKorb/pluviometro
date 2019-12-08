@@ -4,7 +4,11 @@ const admin = require('firebase-admin');
 var id_Sensor;
 var data_Sensor;
 var nivel_Sensor;
-
+var timeToSend = {
+  hours: 6,
+  minutes: 0,
+  seconds: 0
+};
 var validIds = ['ARA00', 'ARA01', 'ARA02', 'ARA03', 'TESTE01'];
 
 
@@ -21,8 +25,13 @@ app.get('/view', function(request, response){
 });
 
 app.get('/date', function(request, response){
-  var novaHora = new Date();
-  response.send(JSON.stringfy(novaHora.getHours()));
+  var dateNow = new Date();
+  var hour = (timeToSend.hours -dateNow.getHours() + 24)*3600000;
+  var minutes = (timeToSend.minutes -dateNow.getMinutes())*60000;
+  var seconds = (timeToSend.seconds -dateNow.getSeconds())*1000;
+  var delayTime = hour + minutes + seconds;
+  response.send(JSON.stringify(delayTime));
+
 });
 
 app.get('/update', function(request, response){

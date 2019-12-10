@@ -22,12 +22,12 @@ var fire_app = admin.initializeApp({
 var db = admin.database();
 
 //Local
-app.get('/view', function(request, response){
-  response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/table.html');
+//app.get('/view', function(request, response){
+//  response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/table.html');
 
 //SERVER
-/*app.get('/view', function(request, response){
-  response.sendFile('/home/pluviometro/pluviometro/src/table.html');*/
+app.get('/view', function(request, response){
+  response.sendFile('/home/pluviometro/pluviometro/src/table.html');
 });
 
 app.get('/date', function(request, response){
@@ -36,13 +36,8 @@ app.get('/date', function(request, response){
     .then(function(response){
       console.log(response.data);
       currentTime = response;
-    });/*
-  var dateNow = new Date();
-  var hour = (timeToSend.hours -dateNow.getHours() + 24)*3600000;
-  var minutes = (timeToSend.minutes -dateNow.getMinutes())*60000;
-  var seconds = (timeToSend.seconds -dateNow.getSeconds())*1000;
-  var delayTime = hour + minutes + seconds;
-  response.send(JSON.stringify(delayTime));*/
+    });
+
 
 });
 
@@ -53,9 +48,9 @@ app.get('/update', function(request, response){
   console.log("Query request: " + request.query.id + " " + request.query.chuva + " " + request.query.dia);
   if(isItIn(validIds, id_Sensor)){
     //LOCAL
-    response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/index.html');
+    //response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/index.html');
     //SERVER
-    //response.sendFile('/home/pluviometro/pluviometro/src/index.html');
+    response.sendFile('/home/pluviometro/pluviometro/src/index.html');
 
     var ref = db.ref("dados-chuva");
     var agora = new Date();

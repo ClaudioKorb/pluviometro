@@ -30,15 +30,25 @@ app.get('/view', function(request, response){
   response.sendFile('/home/pluviometro/pluviometro/src/table.html');
 });
 
-app.get('/date', function(request, response){
+app.get('/date', function(request, res){
   let currentTime;
+  let hour;
+  let minute;
   axios.get('http://worldclockapi.com/api/json/est/now')
     .then(function(response){
-      console.log(response.data);
-      currentTime = response;
+      //console.log(response.data);
+      currentTime = response.data.currentDateTime;
+      let result = currentTime.split("T");
+      result = result[1].split("-");
+      result = result[0].split(":");
+      console.log(result);
+      hour = (result[0]);
+      minute = (result[1]);
+      hour = (24 - hour + timeToSend.hours)*3600000;
+      minute = (-minute + timeToSend.minutes)*60000;
+      console.log(hour+minute);
+      res.send(JSON.stringify(hour+minute));
     });
-
-
 });
 
 app.get('/update', function(request, response){

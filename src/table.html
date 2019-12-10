@@ -4,19 +4,27 @@
     <meta charset="utf-8">
     <title></title>
     <h2 id = "database"></h2>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   </head>
   <body>
 
-  <div>
-    <table style="width:50%" id = "tabela">
-     <tr>
-       <th>Sensor</th>
-       <th>Data</th>
-       <th>Chuva(mm)</th>
-     </tr>
-    </table>
+  <div class ="container">
+    <div class="row">
+      <div class="col-sm">
+        <table class="table" id="tabela">
+          <thead>
+            <tr>
+              <th scope="col">Sensor</th>
+              <th scope="col">Data</th>
+              <th scope="col">Chuva(mm)</th>
+            </tr>
+          </thead>
+        </table>
+        <button type="button" class="btn btn-primary" id = "botao" align="center">REFRESH</button>
+      </div>
+      <div class="col-sm"> GRAPH GOES IN HERE</div>
+    </div>
   </div>
-  <button id = "botao">REFRESH</button>
 
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
@@ -41,21 +49,37 @@
       dados_chuva.once('value', function(snapshot){
         snapshot.forEach(function(data){
           _dados.push(data.val());
-          var newRow = tabela.insertRow(-1);
-          var newCell1 = newRow.insertCell(0);
-          var newCell2 = newRow.insertCell(1);
-          var newCell3 = newRow.insertCell(2);
-          newCell1.innerHTML = data.val().Id;
-          newCell2.innerHTML = data.val().Data;
-          newCell3.innerHTML = data.val().Nivel;
+          let dia = data.val().Data.Dia;
+          let mes = data.val().Data.Mes;
+          let ano = data.val().Data.Ano;
+          let hora = data.val().Data.Hora;
+          let minuto = data.val().Data.Minuto;
+          let segundo = data.val().Data.Segundo;
+          let id = document.createTextNode(data.val().Id);
+          let date = document.createTextNode(dia + "/" + mes + "/" + ano + " " + hora + ":" + minuto + ":" + segundo );
+          let rain = document.createTextNode(data.val().Nivel);
+          console.log(data.val().Nivel)
+          let newRow = tabela.insertRow(-1);
+          let idCell = newRow.insertCell(-1);
+          let dateCell = newRow.insertCell(-1);
+          let rainCell = newRow.insertCell(-1);
+
+          idCell.appendChild(id);
+          dateCell.appendChild(date);
+          rainCell.appendChild(rain);
+
         });
       }, function(error){
         console.log("Error: " + error.code);
       });
 
-      
+
 
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
   </body>
 </html>

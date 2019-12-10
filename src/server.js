@@ -1,6 +1,7 @@
 const express = require('express');
 const app = new express();
 const admin = require('firebase-admin');
+const axios = require('axios');
 var id_Sensor;
 var data_Sensor;
 var nivel_Sensor;
@@ -20,17 +21,28 @@ var fire_app = admin.initializeApp({
 });
 var db = admin.database();
 
+//Local
 app.get('/view', function(request, response){
-  response.sendFile('/home/pluviometro/pluviometro/src/table.html');
+  response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/table.html');
+
+//SERVER
+/*app.get('/view', function(request, response){
+  response.sendFile('/home/pluviometro/pluviometro/src/table.html');*/
 });
 
 app.get('/date', function(request, response){
+  let currentTime;
+  axios.get('http://worldclockapi.com/api/json/est/now')
+    .then(function(response){
+      console.log(response.data);
+      currentTime = response;
+    });/*
   var dateNow = new Date();
   var hour = (timeToSend.hours -dateNow.getHours() + 24)*3600000;
   var minutes = (timeToSend.minutes -dateNow.getMinutes())*60000;
   var seconds = (timeToSend.seconds -dateNow.getSeconds())*1000;
   var delayTime = hour + minutes + seconds;
-  response.send(JSON.stringify(delayTime));
+  response.send(JSON.stringify(delayTime));*/
 
 });
 
@@ -40,12 +52,24 @@ app.get('/update', function(request, response){
   data_Sensor = request.query.dia;
   console.log("Query request: " + request.query.id + " " + request.query.chuva + " " + request.query.dia);
   if(isItIn(validIds, id_Sensor)){
-    response.sendFile('/home/pluviometro/pluviometro/src/index.html');
+    //LOCAL
+    response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/index.html');
+    //SERVER
+    //response.sendFile('/home/pluviometro/pluviometro/src/index.html');
+
     var ref = db.ref("dados-chuva");
     var agora = new Date();
     ref.push(
       {
-          Data: agora.getTime(),
+          Data: {
+            Dia: agora.getDate(),
+            Mes: agora.getMonth() + 1,
+            Ano: agora.getFullYear(),
+            Hora: agora.getHours(),
+            Minuto: agora.getMinutes(),
+            Segundo: agora.getSeconds()
+          },
+
           Id: id_Sensor,
           Nivel: nivel_Sensor
       },

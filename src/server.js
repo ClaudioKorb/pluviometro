@@ -2,6 +2,10 @@ const express = require('express');
 const app = new express();
 const admin = require('firebase-admin');
 const axios = require('axios');
+
+var running = "server";
+//var running = "local";
+
 var id_Sensor;
 var data_Sensor;
 var nivel_Sensor;
@@ -21,14 +25,17 @@ var fire_app = admin.initializeApp({
 });
 var db = admin.database();
 
-//Local
-//app.get('/view', function(request, response){
-//  response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/table.html');
-
-//SERVER
-app.get('/view', function(request, response){
-  response.sendFile('/home/pluviometro/pluviometro/src/table.html');
-});
+if(running == "local"){
+  //Local
+  app.get('/view', function(request, response){
+    response.sendFile('/home/claudiokorb/Documents/pluviometro/Server src/src/table.html');
+  });
+}else{
+  //SERVER
+  app.get('/view', function(request, response){
+    response.sendFile('/home/pluviometro/pluviometro/src/table.html');
+  });
+}
 
 app.get('/date', function(request, res){
   let currentTime;
@@ -57,11 +64,12 @@ app.get('/update', function(request, response){
   data_Sensor = request.query.dia;
   console.log("Query request: " + request.query.id + " " + request.query.chuva + " " + request.query.dia);
   if(isItIn(validIds, id_Sensor)){
-    //LOCAL
-    //response.sendFile('/home/claudiokorb/Documents/pluviometro/pluviometro/src/index.html');
-    //SERVER
-    response.sendFile('/home/pluviometro/pluviometro/src/index.html');
+    if(running == "local"){
+      response.sendFile('/home/claudiokorb/Documents/pluviometro/Server src/src/index.html');
+    }else{
+      response.sendFile('/home/pluviometro/pluviometro/src/index.html');
 
+    }
     var ref = db.ref("dados-chuva");
     var agora = new Date();
     ref.push(
@@ -86,7 +94,7 @@ app.get('/update', function(request, response){
           }
     });
   }else{
-    response.send("SAI DO MEU SERVIDOR SEU OTARIO");
+    response.send("Invalid Id");
   }
 
 
